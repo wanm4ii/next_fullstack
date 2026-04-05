@@ -1,20 +1,19 @@
-'use cilent'
-import { useState } from 'react'
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function page () {
-    const router = useRouter()
-    const [form, setForm] = useState({
-        name:'', detail:'', coverimage:'', latitude:'', longitude:''
-    })
+export default function NewAttractionPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({
+    name: "", detail: "", coverimage: "", latitude: "", longitude: ""
+  });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
-    const [saveing, setSaving] = useState(false)
-    const [error, setError] = useState('')
+  const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-    const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-    async function onSubmit(e) {
+  async function onSubmit(e) {
     e.preventDefault();
     setSaving(true); setError("");
     try {
@@ -38,17 +37,18 @@ export default function page () {
   }
 
   return (
-    <div style={{maxWidth:640, margin:"24px auto"}}>
-        <h1>Create Attraction</h1>
-        <form style={{display:"grid",grap:12}}>
-            <input name="name" placeholder='name' value={form.name} onChange={onChange} required/>
-            <input name="coverimage" placeholder='Cover Image URL' value={form.coverimage} onChange={onChange} required/>
-            <textarea name="detail" placeholder='Detail' row={4} value={form.input} onChange={onChange} required/>
-            <input name="latitude" placeholder='Latitude' value={form.latitude} onChange={onChange} required/>
-            <input name="longitude" placeholder='Longitude' value={form.longitude} onChange={onChange} required/>
-            <button disabled={saving}>{saving ? "Saving..." : "Create"}</button>
-        </form>
-        <p><Link href="/attractions">Back</Link></p>
+    <div style={{ maxWidth: 640, margin: "24px auto" }}>
+      <h1>Create Attraction</h1>
+      <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
+        <input name="name" placeholder="Name" value={form.name} onChange={onChange} required />
+        <input name="coverimage" placeholder="Cover Image URL" value={form.coverimage} onChange={onChange} required />
+        <textarea name="detail" placeholder="Detail" rows={4} value={form.detail} onChange={onChange} />
+        <input name="latitude" placeholder="Latitude" value={form.latitude} onChange={onChange} />
+        <input name="longitude" placeholder="Longitude" value={form.longitude} onChange={onChange} />
+        <button disabled={saving}>{saving ? "Saving..." : "Create"}</button>
+        {error && <div style={{ color: "crimson" }}>{error}</div>}
+      </form>
+      <p><Link href="/attractions">Back</Link></p>
     </div>
-  )
+  );
 }
